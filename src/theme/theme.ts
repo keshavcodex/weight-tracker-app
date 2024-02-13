@@ -19,7 +19,7 @@ const themeModal = () => {
     skyBlue: '#30D5C8',
     yellow: 'yellow',
     green: 'green',
-    blue: 'green',
+    blue: 'blue',
     purple: 'purple'
   };
 

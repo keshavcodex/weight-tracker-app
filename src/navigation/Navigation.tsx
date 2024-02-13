@@ -7,6 +7,7 @@ import Account from '../screens/Account';
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import { useSelector } from 'react-redux';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -19,7 +20,7 @@ const Navigation = () => {
     return (
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
-          name="Home"
+          name="HomePage"
           component={Home}
           options={{ headerShown: false }}
         />
@@ -31,7 +32,7 @@ const Navigation = () => {
     return (
       <Stack.Navigator initialRouteName="Account">
         <Stack.Screen
-          name="Account"
+          name="AccountPage"
           component={Account}
           options={{ headerShown: false }}
         />
@@ -46,7 +47,12 @@ const Navigation = () => {
           <Tab.Screen
             name="Home"
             component={HomeStack}
-            options={{ headerShown: false }}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({ color, size }) => (
+                <AntDesign name="home" color={color} size={size} />
+              ),
+            }}
           />
           <Tab.Screen
             name="Account"
