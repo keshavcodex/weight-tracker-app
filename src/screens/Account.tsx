@@ -1,21 +1,30 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import themeModal from '../theme/theme';
 import GradientText from '../components/GradientText';
 import MainButton from '../components/MainButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setUserInfo } from '../store/store';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { setUserInfo, logout } from '../store/store';
 
 const Account = () => {
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: any) => state.user.userInfo);
+  console.log('user22', user);
   const theme = themeModal();
   const dispatch = useDispatch();
 
-  const handleLogout = async () => {
-    await AsyncStorage.clear();
-    dispatch(setUserInfo(''));
+  const handleLogout = () => {
+    try {
+      AsyncStorage.clear();
+      dispatch(logout());
+      console.log('user logging out', user);
+    } catch (error) {
+      console.error('Error logging out:', error);
+      Alert.alert(
+        'Logout Error',
+        'An error occurred while logging out. Please try again.',
+      );
+    }
   };
 
   return (
@@ -26,24 +35,24 @@ const Account = () => {
       }}>
       <GradientText
         style={{
-          fontSize: 40,
+          fontSize: 35,
           fontWeight: '600',
           textAlign: 'center',
         }}
         gradientHeight={18}
-        colors={['blue', 'red']}>
-        Hello, {user.firstName}.
+        colors={[
+          theme.dark ? theme.white : theme.blue,
+          theme.dark ? theme.yellow : 'red',
+        ]}>
+        Hello, {user?.firstName}.
       </GradientText>
       <View style={{ alignItems: 'center' }}>
         <Text style={{ fontSize: 25, fontWeight: '500' }}>
           Email: {user?.email}
         </Text>
       </View>
-      <View>
-        <AntDesign name="home" color={theme.blue} size={20} />
-      </View>
       <View style={{ flex: 1, marginHorizontal: 10, justifyContent: 'center' }}>
-        <MainButton label={'Logout'} onPress={handleLogout} />
+        <MainButton onPress={handleLogout}>Logout</MainButton>
       </View>
     </View>
   );
