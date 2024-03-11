@@ -29,25 +29,25 @@ const Graph = ({ lables, data }: { lables: string[]; data: number[] }) => {
         yAxisSuffix=" Kg"
         yAxisInterval={100}
         chartConfig={{
-          backgroundColor: theme.primary,
-        //   backgroundGradientFrom: theme.main,
-          backgroundGradientTo: '#01424f',
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(0, 255, 255, ${0.5})`,
-          labelColor: (opacity = 1) => `rgba(0, 255, 255, ${1})`,
+          backgroundColor: theme.white,
+          backgroundGradientFrom: '#11121f',
+          backgroundGradientTo: '#330909',
+          decimalPlaces: 1, // optional, defaults to 2dp
+          color: (opacity = 1) => theme.white,
+          labelColor: (opacity = 1) => theme.white,
           style: {
             borderRadius: 2,
           },
           propsForDots: {
-            r: '4',
-            strokeWidth: '5',
-            stroke: theme.primary,
+            fill: theme.white,
+            strokeWidth: '3',
+            stroke: theme.orange,
           },
         }}
-        bezier
+        // bezier
         style={{
           borderRadius: 8,
-          padding: 4,
+          padding: 2,
           backgroundColor: theme.primary,
         }}
       />

@@ -9,7 +9,6 @@ import { setUserInfo, logout } from '../store/store';
 
 const Account = () => {
   const user = useSelector((state: any) => state.user.userInfo);
-  console.log('user22', user);
   const theme = themeModal();
   const dispatch = useDispatch();
 
