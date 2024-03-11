@@ -1,6 +1,5 @@
 import axios from 'axios';
-// import {baseUrl} from '@env';
-import { baseUrl } from '../../../env-file';
+import { baseUrl } from '@env';
 
 const getService = async (route: string) => {
   try {
@@ -11,10 +10,12 @@ const getService = async (route: string) => {
   }
 };
 export const getWeight = async (id: string) => {
-  console.log(baseUrl);
   return await getService(`${baseUrl}/getweight/${id}`);
 };
-export const getAllWeight = async () => {
-  console.log(baseUrl);
+export const getAllWeight = async (id: string) => {
+  // return await getService(`${baseUrl}/getAllWeight/${id}`);
+  return await getService(`https://gym-tracker-wi0v.onrender.com/getAllWeight/${id}`);
+};
+export const getAllWeightFromDB = async () => {
   return await getService(`${baseUrl}/getAllWeight`);
 };

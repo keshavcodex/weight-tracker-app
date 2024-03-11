@@ -11,7 +11,7 @@ const CustomInput = (props: any) => {
       mode="outlined"
       value={value}
       outlineColor={theme.main}
-      activeOutlineColor={theme.skyBlue}
+      activeOutlineColor={theme.primary}
       onChangeText={text => setValue(text)}
       style={{marginBottom: 10}}
     />

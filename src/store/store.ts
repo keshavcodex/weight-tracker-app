@@ -10,4 +10,7 @@ const store = configureStore({
 export const setUserInfo = (body: any) =>
   store.dispatch(userSlice.actions.setUserInfo(body));
 
+export const logout = () =>
+  store.dispatch(userSlice.actions.setUserInfo(null));
+
 export default store;

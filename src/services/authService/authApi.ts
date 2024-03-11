@@ -1,31 +1,30 @@
 import axios from 'axios';
-// import {baseUrl} from '@env';
-import {baseUrl} from '../../../env-file';
+import { baseUrl } from '@env';
 
-interface UserInfo {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-  phone?: string;
+export interface UserInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phone: string;
 }
 
-export const login = async (body: UserInfo) => {
+export const login = async (body: any) => {
   try {
     const response: any = await axios.post(`${baseUrl}/login`, body);
     return response?.data;
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log('err\n\n', JSON.stringify(error.message));
     return error;
   }
 };
 
-export const register = async (body: string) => {
+export const register = async (body: UserInfo) => {
   try {
     const response: any = await axios.post(`${baseUrl}/register`, body);
-    return response;
+    return response?.data;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };
