@@ -1,7 +1,25 @@
 import { View, Text, Pressable } from 'react-native';
 import themeModal from '../theme/theme';
+import { ReactNode } from 'react';
 
-const SmallButton = ({ children, onPress, customStyle }: any) => {
+interface customStyle {
+  backgroundColor?: string;
+  borderRadius?: string | number;
+  borderWidth?: 0.5;
+  width?: string | number;
+  marginVertical?: string | number;
+  margint?: string | number;
+  marginRight?: string | number;
+  alignSelf?: string;
+}
+
+interface SmallButtonINF {
+  children: ReactNode;
+  onPress: any;
+  customStyle: customStyle;
+}
+
+const SmallButton = ({ children, onPress, customStyle }: SmallButtonINF) => {
   const theme = themeModal();
   return (
     <Pressable

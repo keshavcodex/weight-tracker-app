@@ -41,11 +41,11 @@ const AddWeight = ({ navigation }: any) => {
         onDayPress={day => {
           setSelectedDate(day.dateString);
         }}
+        maxDate={dateString}
         markedDates={{
           [selectedDate]: {
             selected: true,
             disableTouchEvent: false,
-            // selectedColor: 'blue'
           },
         }}
         theme={{
