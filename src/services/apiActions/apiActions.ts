@@ -10,7 +10,8 @@ export const addWeight = async (body: any) => {
 };
 export const addNote = async (body: any) => {
   try {
-    return await axios.post(`${baseUrl}/addNote`, body);
+    const response = await axios.post(`${baseUrl}/addNote`, body);
+    return response.data;
   } catch (error) {
     console.log(error);
   }

@@ -13,7 +13,7 @@ import themeModal from '../theme/theme';
 import WeightHistory from '../screens/WeightHistory';
 import AddWeight from '../screens/AddWeight';
 import AddNote from '../screens/AddNote';
-import NoteHistory from '../screens/NoteHistory';
+import NoteList from '../screens/NoteList';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -45,10 +45,10 @@ const Navigation = () => {
 
   function NoteStack() {
     return (
-      <Stack.Navigator initialRouteName="NoteHistory">
+      <Stack.Navigator initialRouteName="NoteList">
         <Stack.Screen
-          name="NoteHistory"
-          component={NoteHistory}
+          name="NoteList"
+          component={NoteList}
           options={{ headerShown: false }}
         />
         <Stack.Screen
