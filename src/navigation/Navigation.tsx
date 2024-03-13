@@ -13,6 +13,7 @@ import themeModal from '../theme/theme';
 import WeightHistory from '../screens/WeightHistory';
 import AddWeight from '../screens/AddWeight';
 import AddNote from '../screens/AddNote';
+import EditNote from '../screens/EditNote';
 import NoteList from '../screens/NoteList';
 
 const Navigation = () => {
@@ -54,6 +55,11 @@ const Navigation = () => {
         <Stack.Screen
           name="AddNote"
           component={AddNote}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditNote"
+          component={EditNote}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

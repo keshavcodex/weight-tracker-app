@@ -12,9 +12,9 @@ import { dateFormater } from '../utils/helper';
 
 const AddWeight = ({ navigation }: any) => {
   const theme = themeModal();
-  const today = new Date();
   const user = useSelector((state: any) => state.user.userInfo);
   const [userWeight, setUserWeight] = useState('');
+  const today = new Date();
   const dateString =
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   const [selectedDate, setSelectedDate] = useState(dateString);

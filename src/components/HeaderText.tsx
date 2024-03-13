@@ -22,7 +22,9 @@ const HeaderText = (props: any) => {
       ) : (
         <View style={{ padding: 12 }}></View>
       )}
-      <Text style={{ fontSize: 20 }}>{children}</Text>
+      <Text style={{ fontSize: 20, color: theme.orangisGrey }}>
+        {children}
+      </Text>
       {right ? (
         <Pressable style={{ padding: 12 }}>
           <AntDesign name="right" color={theme.fullColorInverse} size={20} />

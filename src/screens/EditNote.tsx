@@ -2,27 +2,34 @@ import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import themeModal from '../theme/theme';
 import { TextInput } from 'react-native-paper';
+import MainButton from '../components/MainButton';
 import HeaderText from '../components/HeaderText';
 import { useSelector } from 'react-redux';
 import SmallButton from '../components/SmallButton';
 import { addNote } from '../services/apiActions/apiActions';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { getAllNotes, getNote } from '../services/apiServices/noteApi';
 import { longDateFormater } from '../utils/helper';
 
-const AddNote = ({ navigation }: any) => {
+const EditNote = ({ route, navigation }: any) => {
   const theme = themeModal();
   const user = useSelector((state: any) => state.user.userInfo);
   const [page, setPage] = useState('');
   const [undoPage, setUndoPage] = useState('');
 
-  const today = new Date();
-  const dateString =
-    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  const [selectedDate, setSelectedDate] = useState(dateString);
-  const [calendarVisible, setCalendarVisible] = useState(false);
+  const noteId: string = route.params.noteId;
+  const selectedDate: string = route.params.selectedDate;
 
-  const handleCalendar = () => {
-    console.log('handleCalendar');
+  useEffect(() => {
+    fetchNote();
+  }, []);
+
+  const fetchNote = async () => {
+    try {
+      const response = await getNote(noteId);
+      setPage(response?.page || '');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleAddNote = async () => {
@@ -45,8 +52,7 @@ const AddNote = ({ navigation }: any) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.main }}>
-      <HeaderText left>Create Note</HeaderText>
-
+      <HeaderText left>Edit Note</HeaderText>
       {/* <Calendar
         style={{
           borderWidth: 1,
@@ -79,23 +85,15 @@ const AddNote = ({ navigation }: any) => {
           justifyContent: 'space-between',
           marginHorizontal: 5,
         }}>
-        <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-          <Text
-            style={{
-              fontSize: 19,
-              alignSelf: 'center',
-              fontWeight: '500',
-              color: theme.fullColorInverse,
-              paddingEnd: 10,
-            }}>
-            {longDateFormater(selectedDate)}
-          </Text>
-          <Pressable
-            onPress={() => setCalendarVisible(!calendarVisible)}
-            style={{ paddingStart: 10 }}>
-            <Ionicons name={'calendar-outline'} size={27} color={'#000'} />
-          </Pressable>
-        </View>
+        <Text
+          style={{
+            fontSize: 19,
+            alignSelf: 'center',
+            fontWeight: '500',
+            color: theme.fullColorInverse,
+          }}>
+          {longDateFormater(selectedDate)}
+        </Text>
 
         <TextInput
           keyboardType="decimal-pad"
@@ -122,43 +120,41 @@ const AddNote = ({ navigation }: any) => {
           }}
         />
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-          {page.length < 1
-            ? undoPage.length > 0 && (
-                <Pressable
-                  onPress={() => {
-                    setPage(undoPage);
-                    setUndoPage(page);
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      color: theme.black,
-                      paddingHorizontal: 10,
-                      textDecorationLine: 'underline',
-                    }}>
-                    Undo
-                  </Text>
-                </Pressable>
-              )
-            : undoPage.length < 1 && (
-                <Pressable
-                  onPress={() => {
-                    if (page.length > 0) {
-                      setUndoPage(page);
-                    }
-                    setPage('');
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      color: theme.black,
-                      textDecorationLine: 'underline',
-                      paddingHorizontal: 10,
-                    }}>
-                    Clear
-                  </Text>
-                </Pressable>
-              )}
+          {page.length < 1 ? (
+            <Pressable
+              onPress={() => {
+                setPage(undoPage);
+                setUndoPage(page);
+              }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme.black,
+                  paddingHorizontal: 10,
+                  textDecorationLine: 'underline',
+                }}>
+                Undo
+              </Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => {
+                if (page.length > 0) {
+                  setUndoPage(page);
+                }
+                setPage('');
+              }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme.black,
+                  textDecorationLine: 'underline',
+                  paddingHorizontal: 10,
+                }}>
+                Clear
+              </Text>
+            </Pressable>
+          )}
         </View>
       </View>
 
@@ -176,7 +172,7 @@ const AddNote = ({ navigation }: any) => {
   );
 };
 
-export default AddNote;
+export default EditNote;
 
 const styles = StyleSheet.create({
   container: {
