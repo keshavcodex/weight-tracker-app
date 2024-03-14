@@ -8,9 +8,13 @@ import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import { useSelector } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import themeModal from '../theme/theme';
 import WeightHistory from '../screens/WeightHistory';
 import AddWeight from '../screens/AddWeight';
+import AddNote from '../screens/AddNote';
+import EditNote from '../screens/EditNote';
+import NoteList from '../screens/NoteList';
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator();
@@ -40,6 +44,28 @@ const Navigation = () => {
     );
   }
 
+  function NoteStack() {
+    return (
+      <Stack.Navigator initialRouteName="NoteList">
+        <Stack.Screen
+          name="NoteList"
+          component={NoteList}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddNote"
+          component={AddNote}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditNote"
+          component={EditNote}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    );
+  }
+
   function AccountStack() {
     return (
       <Stack.Navigator initialRouteName="Account">
@@ -54,10 +80,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={theme.primary}
-      />
+      <StatusBar barStyle={'dark-content'} backgroundColor={theme.primary} />
       {isAuthenticated ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -65,10 +88,18 @@ const Navigation = () => {
               let iconName: string = '';
               if (route.name === 'Home') {
                 iconName = focused ? 'home' : 'home-outline';
+              } else if (route.name === 'Notes') {
+                iconName = focused ? 'notebook' : 'notebook-outline';
+                return (
+                  <MaterialCommunityIcons
+                    name={iconName}
+                    size={size}
+                    color={'#000'}
+                  />
+                );
               } else if (route.name === 'Account') {
                 iconName = focused ? 'person' : 'person-outline';
               }
-
               return <Ionicons name={iconName} size={size} color={'#000'} />;
             },
             tabBarHideOnKeyboard: true,
@@ -82,6 +113,13 @@ const Navigation = () => {
           <Tab.Screen
             name="Home"
             component={HomeStack}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Notes"
+            component={NoteStack}
             options={{
               headerShown: false,
             }}

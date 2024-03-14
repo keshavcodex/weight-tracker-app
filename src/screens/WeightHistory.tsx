@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, Pressable, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  RefreshControl,
+} from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { getAllWeight } from '../services/apiServices/weightApi';
 import { useSelector } from 'react-redux';
@@ -71,8 +77,8 @@ const WeightHistory = () => {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 borderWidth: 1,
-                borderRadius: 8,
-                marginVertical: 5,
+                borderRadius: 25,
+                margin: 5,
                 paddingVertical: 5,
                 backgroundColor: theme.dark
                   ? theme.orangisGrey
@@ -89,12 +95,17 @@ const WeightHistory = () => {
                   color={theme.fullColorInverse}
                   size={30}
                 />
-                <Text style={{ fontSize: 20, paddingHorizontal: 10 }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    paddingHorizontal: 10,
+                    color: theme.fullColorInverse,
+                  }}>
                   {parseFloat(weightData?.weight).toFixed(1)} {'Kg'}
                 </Text>
               </View>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 18 }}>
+                <Text style={{ fontSize: 18, color: theme.fullColorInverse }}>
                   {dateFormater(weightData?.selectedDate)}
                 </Text>
               </View>

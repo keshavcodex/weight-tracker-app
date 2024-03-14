@@ -78,7 +78,7 @@ const Home = ({ navigation }: any) => {
           </GradientText>
           <Text
             style={{
-              color: theme.fullColorInverse,
+              color: theme.orangisGrey,
               fontSize: 30,
               fontWeight: '600',
               textAlign: 'center',

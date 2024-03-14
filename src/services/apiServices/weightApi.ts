@@ -9,12 +9,11 @@ const getService = async (route: string) => {
     console.log(JSON.stringify(error, null, 2));
   }
 };
-export const getWeight = async (id: string) => {
+export const getWeight = async (id: String) => {
   return await getService(`${baseUrl}/getweight/${id}`);
 };
-export const getAllWeight = async (id: string) => {
-  // return await getService(`${baseUrl}/getAllWeight/${id}`);
-  return await getService(`https://gym-tracker-wi0v.onrender.com/getAllWeight/${id}`);
+export const getAllWeight = async (id: String) => {
+  return await getService(`${baseUrl}/getAllWeight/${id}`);
 };
 export const getAllWeightFromDB = async () => {
   return await getService(`${baseUrl}/getAllWeight`);

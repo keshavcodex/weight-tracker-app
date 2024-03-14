@@ -7,7 +7,7 @@ const MainButton = ({ children, onPress, customStyle }: any) => {
     <Pressable onPress={onPress}>
       <View
         style={[
-          { backgroundColor: theme.primary, borderRadius: 10 },
+          { backgroundColor: theme.primary, borderRadius: 25 },
           { ...customStyle },
         ]}>
         <Text

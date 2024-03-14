@@ -13,19 +13,25 @@ const HeaderText = (props: any) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        margin: 12,
+        margin: 2,
       }}>
-      <Pressable onPress={() => navigation.goBack()}>
-        {left && (
+      {left ? (
+        <Pressable onPress={() => navigation.goBack()} style={{ padding: 12 }}>
           <AntDesign name="left" color={theme.fullColorInverse} size={20} />
-        )}
-      </Pressable>
-      <Text style={{ fontSize: 20 }}>{children}</Text>
-      <Pressable>
-        {right && (
+        </Pressable>
+      ) : (
+        <View style={{ padding: 12 }}></View>
+      )}
+      <Text style={{ fontSize: 20, color: theme.orangisGrey }}>
+        {children}
+      </Text>
+      {right ? (
+        <Pressable style={{ padding: 12 }}>
           <AntDesign name="right" color={theme.fullColorInverse} size={20} />
-        )}
-      </Pressable>
+        </Pressable>
+      ) : (
+        <View style={{ padding: 12 }}></View>
+      )}
     </View>
   );
 };
