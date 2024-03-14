@@ -25,3 +25,12 @@ export const trimDate = (date: Date) => {
     return 'Invalid date';
   }
 };
+
+export const monthDayFormatter = (text: string) => {
+  const date = new Date(text);
+  const formattedDate = date.toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+  });
+  return formattedDate;
+};

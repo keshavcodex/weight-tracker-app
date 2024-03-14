@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import themeModal from '../theme/theme';
 import { TextInput } from 'react-native-paper';
@@ -51,7 +51,7 @@ const EditNote = ({ route, navigation }: any) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.main }}>
+    <ScrollView style={{ flex: 1, backgroundColor: theme.main }}>
       <HeaderText left>Edit Note</HeaderText>
       {/* <Calendar
         style={{
@@ -96,7 +96,6 @@ const EditNote = ({ route, navigation }: any) => {
         </Text>
 
         <TextInput
-          keyboardType="decimal-pad"
           value={page}
           textColor={theme.black}
           placeholder="Write notes..."
@@ -104,7 +103,7 @@ const EditNote = ({ route, navigation }: any) => {
           underlineColor={theme.primary}
           multiline
           // dense
-          numberOfLines={page.length / 45 + 2}
+          numberOfLines={20}
           outlineColor={theme.primary}
           selectionColor={theme.primary}
           activeOutlineColor={theme.primary}
@@ -168,7 +167,7 @@ const EditNote = ({ route, navigation }: any) => {
         onPress={handleAddNote}>
         save
       </SmallButton>
-    </View>
+    </ScrollView>
   );
 };
 

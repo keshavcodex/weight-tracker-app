@@ -9,7 +9,12 @@ import { useSelector } from 'react-redux';
 import SmallButton from '../components/SmallButton';
 import { addNote } from '../services/apiActions/apiActions';
 import { getAllNotes } from '../services/apiServices/noteApi';
-import { longDateFormater, trimDate } from '../utils/helper';
+import {
+  dateFormater,
+  longDateFormater,
+  monthDayFormatter,
+  trimDate,
+} from '../utils/helper';
 import { RefreshControl } from 'react-native';
 
 const NoteList = ({ navigation }: any) => {
@@ -21,6 +26,7 @@ const NoteList = ({ navigation }: any) => {
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   const [selectedDate, setSelectedDate] = useState(dateString);
   const [refreshing, setRefreshing] = useState(false);
+  const [pointedDate, setPointedDate] = useState('');
 
   useEffect(() => {
     fetchAllNotes();
@@ -31,11 +37,12 @@ const NoteList = ({ navigation }: any) => {
       const response = await getAllNotes(user?._id);
       const itemList = response.reduce((accumulation: any, note: any) => {
         const formattedDate = trimDate(note.selectedDate);
-
-        if (accumulation[formattedDate]) {
-          accumulation[formattedDate].push(note);
-        } else {
-          accumulation[formattedDate] = [note];
+        if (note.page != '') {
+          if (accumulation[formattedDate]) {
+            accumulation[formattedDate].push(note);
+          } else {
+            accumulation[formattedDate] = [note];
+          }
         }
 
         return accumulation;
@@ -65,6 +72,38 @@ const NoteList = ({ navigation }: any) => {
     }
   };
 
+  const EmptyNoteView = () => {
+    return (
+      <View>
+        <Text
+          style={{
+            fontSize: 20,
+            color: theme.black,
+            textAlign: 'center',
+          }}>
+          Note unavilable on {monthDayFormatter(pointedDate)}
+        </Text>
+        <SmallButton
+          customStyle={{
+            marginVertical: 10,
+            marginRight: 10,
+            borderWidth: 0.5,
+            borderRadius: 25,
+            alignSelf: 'center',
+            width: '25%',
+          }}
+          textStyle={{
+            fontWeight: '300',
+            color: theme.white,
+          }}
+          onPress={() => navigation.navigate('AddNote', { pointedDate })}>
+          Add Note
+        </SmallButton>
+        {/* {'\n' + dateFormater(selectedDate)} */}
+      </View>
+    );
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: theme.main }}>
       <HeaderText left>Notes List</HeaderText>
@@ -72,37 +111,13 @@ const NoteList = ({ navigation }: any) => {
         selected={selectedDate}
         pastScrollRange={12}
         futureScrollRange={12}
-        // markToday={}
-        // scrollToNextEvent={false}
         items={items}
         showClosingKnob
-        renderEmptyDate={() => {
-          return (
-            <Text
-              style={{
-                fontSize: 20,
-                color: theme.black,
-                textAlign: 'center',
-              }}>
-              M
-            </Text>
-          );
+        loadItemsForMonth={pickedDate => {
+          setPointedDate(pickedDate?.dateString);
+          fetchAllNotes();
         }}
-        renderEmptyData={() => {
-          return (
-            <View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: theme.black,
-                  textAlign: 'center',
-                }}>
-                No note avilable
-                {/* {'\n' + longDateFormater(selectedDate)} */}
-              </Text>
-            </View>
-          );
-        }}
+        renderEmptyData={EmptyNoteView}
         renderItem={(item: any, isFirst) => (
           <Pressable style={styles.item} onPress={() => handleEditNote(item)}>
             <Text style={styles.itemText}>{item.page}</Text>
@@ -112,29 +127,32 @@ const NoteList = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
         theme={{
-          calendarBackground: theme.primary,
-          selectedDayBackgroundColor: theme.orange,
+          agendaDayTextColor: theme.primary,
+          agendaDayNumColor: theme.primary,
+          agendaTodayColor: theme.primary,
+          calendarBackground: theme.sandybrown,
+          dotColor: theme.white,
+          selectedDayBackgroundColor: theme.brown,
           arrowColor: theme.orange,
-          textSectionTitleColor: theme.black,
-          selectedDayTextColor: theme.seaGreen,
+          textSectionTitleColor: theme.orangisGrey,
+          selectedDayTextColor: theme.white,
           monthTextColor: theme.fullColorInverse,
           todayTextColor: theme.black,
-          dayTextColor: theme.white,
+          dayTextColor: theme.black,
           textDisabledColor: theme.smoke,
         }}
       />
-      <SmallButton
+      {/* <SmallButton
         customStyle={{
           marginVertical: 10,
           marginRight: 10,
           borderWidth: 0.5,
-          borderRadius: 5,
           alignSelf: 'flex-end',
           width: 50,
         }}
         onPress={() => navigation.navigate('AddNote')}>
         +
-      </SmallButton>
+      </SmallButton> */}
     </View>
   );
 };
@@ -142,10 +160,6 @@ const NoteList = ({ navigation }: any) => {
 export default NoteList;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   item: {
     backgroundColor: 'white',
     flex: 1,

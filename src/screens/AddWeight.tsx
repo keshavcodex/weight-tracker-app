@@ -1,19 +1,21 @@
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { View, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Calendar } from 'react-native-calendars';
+import { View, Text, Pressable } from 'react-native';
+import React, { useState } from 'react';
 import themeModal from '../theme/theme';
 import { TextInput } from 'react-native-paper';
-import MainButton from '../components/MainButton';
 import HeaderText from '../components/HeaderText';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import SmallButton from '../components/SmallButton';
 import { addWeight } from '../services/apiActions/apiActions';
-import { dateFormater } from '../utils/helper';
+import { dateFormater, longDateFormater } from '../utils/helper';
 
 const AddWeight = ({ navigation }: any) => {
   const theme = themeModal();
   const user = useSelector((state: any) => state.user.userInfo);
   const [userWeight, setUserWeight] = useState('');
+  const [calendarVisible, setCalendarVisible] = useState(false);
+
   const today = new Date();
   const dateString =
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -37,7 +39,7 @@ const AddWeight = ({ navigation }: any) => {
     <View
       style={{ flex: 1, backgroundColor: theme.main, paddingHorizontal: 10 }}>
       <HeaderText left>Add Weight</HeaderText>
-      <Calendar
+      {/* <Calendar
         onDayPress={day => {
           setSelectedDate(day.dateString);
         }}
@@ -59,18 +61,63 @@ const AddWeight = ({ navigation }: any) => {
           dayTextColor: theme.white,
           textDisabledColor: theme.smoke,
         }}
-      />
+      /> */}
+      <Pressable
+        onPress={() => setCalendarVisible(!calendarVisible)}
+        style={{ justifyContent: 'center', flexDirection: 'row' }}>
+        <Text
+          style={{
+            fontSize: 19,
+            alignSelf: 'center',
+            fontWeight: '500',
+            color: theme.fullColorInverse,
+            paddingEnd: 10,
+          }}>
+          {longDateFormater(selectedDate)}
+        </Text>
+        <Ionicons name={'calendar-outline'} size={27} color={'#000'} />
+      </Pressable>
+
+      {calendarVisible && (
+        <Calendar
+          onDayPress={day => {
+            setSelectedDate(day.dateString);
+            setCalendarVisible(false);
+          }}
+          markedDates={{
+            [selectedDate]: {
+              selected: true,
+              disableTouchEvent: false,
+            },
+          }}
+          theme={{
+            calendarBackground: theme.dark ? '#8c4900' : theme.main,
+            selectedDayBackgroundColor: theme.orange,
+            arrowColor: theme.orange,
+            textSectionTitleColor: theme.black,
+            selectedDayTextColor: theme.black,
+            monthTextColor: theme.fullColorInverse,
+            todayTextColor: theme.black,
+            dayTextColor: theme.white,
+            textDisabledColor: theme.smoke,
+          }}
+        />
+      )}
       <View
         style={{
           flexGrow: 0,
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'space-around',
           marginHorizontal: 20,
         }}>
-        <Text style={{ fontSize: 19, alignSelf: 'center' }}>
-          Your Weight on
-          {'\n' + dateFormater(new Date(selectedDate))}
-        </Text>
+        {/* <Text
+          style={{
+            fontSize: 22,
+            alignSelf: 'center',
+            color: theme.fullColorInverse,
+          }}>
+          Add Weight
+        </Text> */}
         <TextInput
           keyboardType="decimal-pad"
           value={userWeight}
@@ -91,6 +138,7 @@ const AddWeight = ({ navigation }: any) => {
           marginVertical: 10,
           borderWidth: 0.5,
           alignSelf: 'center',
+          width: '25%',
         }}
         onPress={handleAddWeight}>
         Add

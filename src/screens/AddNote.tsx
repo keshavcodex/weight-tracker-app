@@ -1,5 +1,5 @@
-import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, Pressable, Alert, ScrollView } from 'react-native';
+import React, { useState } from 'react';
 import themeModal from '../theme/theme';
 import { TextInput } from 'react-native-paper';
 import HeaderText from '../components/HeaderText';
@@ -8,22 +8,21 @@ import SmallButton from '../components/SmallButton';
 import { addNote } from '../services/apiActions/apiActions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { longDateFormater } from '../utils/helper';
+import { Calendar } from 'react-native-calendars';
 
-const AddNote = ({ navigation }: any) => {
+const AddNote = ({ navigation, route }: any) => {
   const theme = themeModal();
   const user = useSelector((state: any) => state.user.userInfo);
   const [page, setPage] = useState('');
   const [undoPage, setUndoPage] = useState('');
 
+  const pointedDate = route?.params?.pointedDate;
+
   const today = new Date();
   const dateString =
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  const [selectedDate, setSelectedDate] = useState(dateString);
+  const [selectedDate, setSelectedDate] = useState(pointedDate || dateString);
   const [calendarVisible, setCalendarVisible] = useState(false);
-
-  const handleCalendar = () => {
-    console.log('handleCalendar');
-  };
 
   const handleAddNote = async () => {
     try {
@@ -33,9 +32,10 @@ const AddNote = ({ navigation }: any) => {
         selectedDate,
       };
       const response = await addNote(body);
-      if (response?.acknowledged) {
+      if (response?.page || response?.acknowledged) {
         navigation.goBack();
       } else {
+        console.log(response);
         Alert.alert('Notes updation failed', 'Please try again');
       }
     } catch (error) {
@@ -44,42 +44,16 @@ const AddNote = ({ navigation }: any) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.main }}>
+    <ScrollView style={{ flex: 1, backgroundColor: theme.main }}>
       <HeaderText left>Create Note</HeaderText>
-
-      {/* <Calendar
-        style={{
-          borderWidth: 1,
-          borderColor: 'gray',
-        }}
-        onDayPress={day => {
-          setSelectedDate(day.dateString);
-        }}
-        markedDates={{
-          [selectedDate]: {
-            selected: true,
-            disableTouchEvent: false,
-            // selectedColor: 'blue'
-          },
-        }}
-        theme={{
-          calendarBackground: theme.main,
-          selectedDayBackgroundColor: theme.orange,
-          arrowColor: theme.orange,
-          textSectionTitleColor: theme.black,
-          selectedDayTextColor: theme.black,
-          monthTextColor: theme.fullColorInverse,
-          todayTextColor: theme.black,
-          dayTextColor: theme.white,
-          textDisabledColor: theme.smoke,
-        }}
-      /> */}
       <View
         style={{
           justifyContent: 'space-between',
           marginHorizontal: 5,
         }}>
-        <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+        <Pressable
+          onPress={() => setCalendarVisible(!calendarVisible)}
+          style={{ justifyContent: 'center', flexDirection: 'row' }}>
           <Text
             style={{
               fontSize: 19,
@@ -90,15 +64,35 @@ const AddNote = ({ navigation }: any) => {
             }}>
             {longDateFormater(selectedDate)}
           </Text>
-          <Pressable
-            onPress={() => setCalendarVisible(!calendarVisible)}
-            style={{ paddingStart: 10 }}>
-            <Ionicons name={'calendar-outline'} size={27} color={'#000'} />
-          </Pressable>
-        </View>
+          <Ionicons name={'calendar-outline'} size={27} color={'#000'} />
+        </Pressable>
 
+        {calendarVisible && (
+          <Calendar
+            onDayPress={day => {
+              setSelectedDate(day.dateString);
+              setCalendarVisible(false);
+            }}
+            markedDates={{
+              [selectedDate]: {
+                selected: true,
+                disableTouchEvent: false,
+              },
+            }}
+            theme={{
+              calendarBackground: theme.dark ? '#8c4900' : theme.main,
+              selectedDayBackgroundColor: theme.orange,
+              arrowColor: theme.orange,
+              textSectionTitleColor: theme.black,
+              selectedDayTextColor: theme.black,
+              monthTextColor: theme.fullColorInverse,
+              todayTextColor: theme.black,
+              dayTextColor: theme.white,
+              textDisabledColor: theme.smoke,
+            }}
+          />
+        )}
         <TextInput
-          keyboardType="decimal-pad"
           value={page}
           textColor={theme.black}
           placeholder="Write notes..."
@@ -106,7 +100,7 @@ const AddNote = ({ navigation }: any) => {
           underlineColor={theme.primary}
           multiline
           // dense
-          numberOfLines={page.length / 45 + 2}
+          numberOfLines={20}
           outlineColor={theme.primary}
           selectionColor={theme.primary}
           activeOutlineColor={theme.primary}
@@ -172,27 +166,8 @@ const AddNote = ({ navigation }: any) => {
         onPress={handleAddNote}>
         save
       </SmallButton>
-    </View>
+    </ScrollView>
   );
 };
 
 export default AddNote;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
-  },
-  itemText: {
-    color: '#888',
-    fontSize: 16,
-  },
-});

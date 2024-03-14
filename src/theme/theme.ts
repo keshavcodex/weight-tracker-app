@@ -20,8 +20,12 @@ const themeModal = () => {
 
   const neutralColor = {
     yellow: 'yellow',
+    skin: '#f0c089',
+    sandybrown: '#f4a560',
     orange: '#db7909',
     red: '#ff0000',
+    brown: '#A52A2A',
+    maroon: '#800000',
     seaGreen: '#43f7d0',
     forestGreen: '#228B22',
     green: 'green',

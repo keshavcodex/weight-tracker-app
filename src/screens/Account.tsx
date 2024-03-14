@@ -46,7 +46,7 @@ const Account = () => {
         Hello, {user?.firstName}.
       </GradientText>
       <View style={{ alignItems: 'center' }}>
-        <Text style={{ fontSize: 25, fontWeight: '500' }}>
+        <Text style={{ fontSize: 25, fontWeight: '500', color: theme.fullColorInverse }}>
           Email: {user?.email}
         </Text>
       </View>
