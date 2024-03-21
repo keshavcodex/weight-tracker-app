@@ -5,7 +5,7 @@ import themeModal from '../theme/theme';
 import GradientText from '../components/GradientText';
 import MainButton from '../components/MainButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setUserInfo, logout } from '../store/store';
+import { logout } from '../store/store';
 
 const Account = () => {
   const user = useSelector((state: any) => state.user.userInfo);
@@ -16,7 +16,6 @@ const Account = () => {
     try {
       AsyncStorage.clear();
       dispatch(logout());
-      console.log('user logging out', user);
     } catch (error) {
       console.error('Error logging out:', error);
       Alert.alert(

@@ -1,11 +1,4 @@
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import { View, Text } from 'react-native';
 import { Dimensions } from 'react-native';
 import themeModal from '../theme/theme';
@@ -36,11 +29,11 @@ const Graph = ({ lables, data }: { lables: string[]; data: number[] }) => {
           color: (opacity = 1) => theme.white,
           labelColor: (opacity = 1) => theme.white,
           style: {
-            borderRadius: 2,
+            borderRadius: 1,
           },
           propsForDots: {
             fill: theme.white,
-            strokeWidth: '3',
+            strokeWidth: '2',
             stroke: theme.orange,
           },
         }}
